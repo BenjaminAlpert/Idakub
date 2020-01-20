@@ -1,0 +1,92 @@
+package idacube;
+
+import java.util.LinkedList;
+
+public class Run extends Group{
+  public Run(Tile...tiles) throws InvalidGroupException{
+    this.tiles = new LinkedList<Tile>();
+    for(int i = 0; i < tiles.length; i++){
+      Tile tile = tiles[i];
+      this.tiles.add(i, tile);
+    }
+    if(!isValid()){
+      this.tiles.clear();
+      throw new InvalidGroupException();
+    }
+    else{
+      this.tiles.clear();
+      for(int i = 0; i < tiles.length; i++){
+        Tile tile = tiles[i];
+        super.add(i, tile);
+      }
+    }
+  }
+
+  public Run(Group group) throws InvalidGroupException{
+    this(group.getTiles().toArray(new Tile[group.getTiles().size()]));
+  }
+
+  @Override
+  public boolean add(int index, Tile tile){
+    super.add(index, tile);
+    if(!isValid()){
+      super.remove(tile);
+      return false;
+    }
+    return true;
+  }
+  @Override
+  public boolean add(Tile tile){
+    return this.add(tiles.size(), tile);
+  }
+
+  @Override
+  public boolean remove(Tile tile){
+    int index = -1;
+    for(int i = 0; i < tiles.size(); i++){
+      if(tile == tiles.get(i)){
+        index = i;
+        super.remove(index);
+      }
+    }
+    if(!isValid()){
+      super.add(index, tile);
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public boolean remove(int index){
+    return this.remove(tiles.get(index));
+  }
+
+  @Override
+  public boolean isValid(){
+    if(tiles.size() < 3){
+      return false;
+    }
+    Tile prevTile = tiles.get(0);
+    Color color = prevTile.getColor();
+    for(int i = 1; i < tiles.size(); i++){
+      Tile tile = tiles.get(i);
+      if(tile.getColor() != color){
+        return false;
+      }
+      if( (tile.getNumber() != prevTile.getNumber() + 1) && !(tile.getNumber() == 1 && prevTile.getNumber() == 13) ){
+        return false;
+      }
+      try{
+        if(tile.getNumber() == 2 && prevTile.getNumber() == 1 && tiles.get(i-2).getNumber() == 13){
+          return false;
+        }
+      }
+      catch(IndexOutOfBoundsException e){
+
+      }
+      prevTile = tiles.get(i);
+    }
+    return true;
+  }
+
+}

@@ -1,0 +1,62 @@
+package idacube;
+
+import java.util.List;
+
+public abstract class Group{
+  protected List<Tile> tiles;
+  public List<Tile> getTiles(){
+    return tiles;
+  }
+  public boolean add(int index, Tile tile){
+    tiles.add(index, tile);
+    if(tile.getParent() != null){
+      ((Group)tile.getParent()).remove(tile);
+    }
+    tile.setParent(this);
+    return true;
+  }
+  public boolean add(Tile tile){
+    return add(tiles.size(), tile);
+  }
+  public boolean remove(Tile tile){
+    tiles.remove(tile);
+    /*if(!tile.setToPreviousParent()){
+      return false;
+    }
+    return ((Group)tile.getParent()).add(tile);*/
+    tile.setParent(null);
+    return true;
+  }
+  public boolean remove(int index){
+    return this.remove(tiles.get(index));
+  }
+  /*public boolean removeAll(){
+    for(Tile tile : tiles){
+      if(!((Group)this).remove(tile)){
+        return false;
+      }
+    }
+    return true;
+  }*/
+
+  public boolean isValid(){
+    return true;
+  }
+
+  public Group getGroup(){
+    return this;
+  }
+
+  @Override
+  public String toString(){
+    String out = "Group: ";
+    for(Tile tile : tiles){
+      out += tile.toString() + ", ";
+    }
+    if(out.length() - 2 >= 0){
+      return out.substring(0, out.length() - 2);
+    }
+    return out;
+  }
+
+}

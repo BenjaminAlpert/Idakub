@@ -1,0 +1,52 @@
+package idacube;
+
+//import java.util.LinkedList;
+
+public class ManipulationGroup extends Group{
+  public ManipulationGroup(){
+    super();
+  }
+  @Override
+  public boolean isValid(){
+    return true;
+  }
+  /*public ManipulationGroup(){
+    tiles = new LinkedList<Tile>();
+  }*/
+  /*public boolean add(Tile tile, int index){
+    return ((Node)this).add(index, tile);
+  }
+  public boolean add(Tile tile){
+    return ((Node)this).add(tiles.size(), tile);
+  }
+  public boolean remove(Tile tile){
+    return ((Node)this).remove(tile);
+  }
+  public boolean remove(int index){
+    return ((Node)this).remove(index);
+  }
+
+  public boolean isValid(){
+    return false;
+  }*/
+  /*@Override
+  public Group getGroup(){
+    Group group;
+    try{
+      System.out.println(tiles);
+      group = new Run(this);
+    }
+    catch(InvalidGroupException e){
+      try{
+        System.out.println(tiles);
+        group = new ThreeOfAKind(this);
+      }
+      catch(InvalidGroupException e1){
+        throw new Error("This is a ManipulationGroup!");
+      }
+    }
+    return group;
+  }*/
+
+
+}

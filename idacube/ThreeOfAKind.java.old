@@ -1,0 +1,88 @@
+package idacube;
+
+import java.util.ArrayList;
+
+public class ThreeOfAKind extends Group{
+  public ThreeOfAKind(Tile...tiles) throws InvalidGroupException{
+    this.tiles = new ArrayList<Tile>();
+    for(int i = 0; i < tiles.length; i++){
+      Tile tile = tiles[i];
+      this.tiles.add(i, tile);
+    }
+    this.tiles = new ArrayList<Tile>();
+    if(!isValid()){
+      this.tiles.clear();
+      throw new InvalidGroupException();
+    }
+    else{
+      this.tiles.clear();
+      for(int i = 0; i < tiles.length; i++){
+        Tile tile = tiles[i];
+        super.add(i, tile);
+      }
+    }
+  }
+
+  public ThreeOfAKind(Group group) throws InvalidGroupException{
+    this(group.getTiles().toArray(new Tile[group.getTiles().size()]));
+  }
+
+  @Override
+  public boolean add(int index, Tile tile){
+    super.add(index, tile);
+    if(!isValid()){
+      super.remove(tile);
+      return false;
+    }
+    return true;
+  }
+  @Override
+  public boolean add(Tile tile){
+    return this.add(tiles.size(), tile);
+  }
+
+  @Override
+  public boolean remove(Tile tile){
+    int index = -1;
+    for(int i = 0; i < tiles.size(); i++){
+      if(tile == tiles.get(i)){
+        index = i;
+        super.remove(index);
+      }
+    }
+    if(!isValid()){
+      super.add(index, tile);
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public boolean remove(int index){
+    return this.remove(tiles.get(index));
+  }
+
+  @Override
+  public boolean isValid(){
+    System.out.println(tiles.size());
+    if(tiles.size() < 3){
+      return false;
+    }
+    ArrayList<Color> colors = new ArrayList<Color>(4);
+
+    int number = tiles.get(0).getNumber();
+    for(int i = 0; i < tiles.size(); i++){
+      Tile tile = tiles.get(i);
+      System.out.println(tile.getColor());
+      if(tile.getNumber() != number){
+        return false;
+      }
+      if(colors.contains(tile.getColor())){
+        return false;
+      }
+      colors.add(tile.getColor());
+    }
+    return tiles.size() <= 4;
+  }
+
+}
